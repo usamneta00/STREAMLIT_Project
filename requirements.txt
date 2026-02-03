@@ -1,0 +1,10 @@
+streamlit
+langgraph
+langchain-openai
+langchain-community
+faiss-cpu
+python-dotenv
+joblib
+scikit-learn
+pandas
+numpy

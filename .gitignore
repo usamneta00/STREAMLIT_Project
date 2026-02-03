@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+broadcast.py
+colab_nkroe.py
+unified_colab_project.py
+supervied_machine_learning.py
+temp_data/

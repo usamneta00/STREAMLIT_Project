@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore California AI | Travel Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <span class="icon">🏜️</span>
+                <h1>Explore <span>California</span></h1>
+            </div>
+            <div class="status-badge" id="backend-status">
+                <div class="status-dot"></div>
+                <span>Checking Backend...</span>
+            </div>
+        </header>
+
+        <main class="chat-wrapper">
+            <div id="chat-messages" class="chat-messages">
+                <div class="message assistant">
+                    <div class="message-content">
+                        Hello! I'm your Explore California AI assistant. I can help you find the best locations and tours across the Golden State. What are your interests, or how can I help you today?
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div id="followups" class="followups"></div>
+                <form id="chat-form">
+                    <input type="text" id="user-input" placeholder="Ask about places, tours, or share your interests..." autocomplete="off">
+                    <button type="submit" id="send-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <aside class="side-panel">
+            <div class="panel-section">
+                <h3>🔍 Context & Insights</h3>
+                <div id="context-info" class="info-content">
+                    Start a conversation to see AI insights here.
+                </div>
+            </div>
+            <div class="panel-section">
+                <h3>🏷️ Recommended Products</h3>
+                <div id="product-info" class="info-content">
+                    No recommendations yet.
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
