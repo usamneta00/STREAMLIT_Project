@@ -20,16 +20,29 @@
     <link rel="icon" type="image/png" href="static/images/website_top_logo_icon-150x150.png" alt="Logo">
 
     <style>
-        .hidden { display: none !important; }
+        .hidden {
+            display: none !important;
+        }
 
         /* Custom subtle scrollbar */
         * {
             scrollbar-width: thin;
             scrollbar-color: rgba(227, 224, 224, 0.5) transparent;
         }
-        *::-webkit-scrollbar { width: 4px; height: 4px; }
-        *::-webkit-scrollbar-thumb { background-color: rgba(227, 224, 224, 0.5); border-radius: 3px; }
-        *::-webkit-scrollbar-track { background: transparent; }
+
+        *::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background-color: rgba(227, 224, 224, 0.5);
+            border-radius: 3px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
     </style>
 </head>
 
@@ -41,7 +54,8 @@
                 <div style="display: flex; align-items: center;">
                     <div class="vertical-divider"></div>
                     <button class="collapse-btn button-arrow">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
                             <line x1="4" y1="12" x2="20" y2="12"></line>
                             <polyline points="14 6 20 12 14 18"></polyline>
                         </svg>
@@ -50,8 +64,9 @@
             </div>
 
             <div class="brand">
-                <span class="logo-icon" style="font-size: 2rem;">🗺️</span>
-                <h2 style="font-size: 1.2rem; margin: 0; color: #4B49AC;">AI Travel <span style="color: #af2929;">Assistant</span></h2>
+                <span class="logo-icon" style="font-size: 2rem;"></span>
+                <h2 style="font-size: 1.2rem; margin: 0; color: #af2929;">AI Travel <span
+                        style="color: #af2929;">Assistant</span></h2>
                 <div class="separator"></div>
             </div>
 
