@@ -4,12 +4,15 @@ import pandas as pd
 import numpy as np
 import joblib
 from fastapi import FastAPI, HTTPException
+from contextlib import asynccontextmanager
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
 from dotenv import load_dotenv
 import uvicorn
+
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -19,7 +22,15 @@ from langchain_core.documents import Document
 # Load environment variables
 load_dotenv()
 
-app = FastAPI(title="Explore California AI API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
+    init_resources()
+    yield
+    # Shutdown logic (if any)
+
+app = FastAPI(title="AI Travel Assistant API", lifespan=lifespan)
+
 
 # Enable CORS for frontend
 app.add_middleware(
@@ -101,16 +112,8 @@ class ChatResponse(BaseModel):
     products: Optional[str] = None
     predicted_product: Optional[str] = None
 
-@app.on_event("startup")
-async def startup_event():
-    init_resources()
-    # Serve frontend files
-    if os.path.exists("frontend"):
-        app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
-@app.get("/")
-async def root():
-    return {"status": "online", "message": "Explore California AI Backend is running"}
+
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -165,7 +168,7 @@ async def chat(request: ChatRequest):
     # Generate Answer
     prompt = [
         SystemMessage(content=(
-            "You are a helpful travel assistant for Explore California. "
+            "You are a helpful AI travel assistant. "
             "Answer the user's travel question using the provided context and products. "
             "Include recommended products in **bold**. "
             "Suggest 3 follow-up questions at the end in the format: "
@@ -201,18 +204,14 @@ async def chat(request: ChatRequest):
         predicted_product=predicted_product
     )
 
-if __name__ == "__main__":
-    import uvicorn
-    from pyngrok import ngrok
-    
-    # Check if NGROK_AUTH_TOKEN is provided
-    ngrok_token = os.getenv("NGROK_AUTH_TOKEN")
-    if ngrok_token and ngrok_token != "your_ngrok_token_here":
-        ngrok.set_auth_token(ngrok_token)
-        public_url = ngrok.connect(8000)
-        print(f"🚀 Project is LIVE at: {public_url}")
-    else:
-        print("⚠️ Warning: NGROK_AUTH_TOKEN not set in .env. Running locally only.")
-        print(f"🔗 Local Frontend: http://localhost:8000")
+# Serve frontend files (Must be after API routes)
+if os.path.exists("frontend"):
+    app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+if __name__ == "__main__":
+    port = 8000
+    print(f"🔗 Server running at: http://localhost:{port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
+

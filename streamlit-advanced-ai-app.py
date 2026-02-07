@@ -19,7 +19,28 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS as LangGraphFAISS
 
 # ========== 1. Configuration ==========
-st.set_page_config(page_title="Explore California AI", layout="wide")
+st.set_page_config(
+    page_title="AI Travel Assistant",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': None
+    }
+)
+
+# Hide Streamlit header, footer and menu
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .stAppDeployButton {display: none;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 load_dotenv()
 
@@ -183,10 +204,9 @@ def generate_answer_with_followups(
             - "total_completion_tokens": number of tokens in the completion
             - "total_tokens": total tokens used
     """
-    # Convert messages to LangChain Message objects
     messages = [
         SystemMessage(content=(
-            "You are a helpful travel assistant for Explore California. "
+            "You are a helpful AI travel assistant. "
             "Answer the user's travel question using the provided context and products. "
             "If relevant tour products are provided, make sure to include them in your answer and format them in **bold** style. "
             "Then, at the end, suggest 3 concise follow-up questions that the user might ask next. "
@@ -412,8 +432,8 @@ def set_chat_state(chat_id: str, key: str, value):
 def get_chat_state(chat_id: str, key: str, default=None):
     return st.session_state.get(f"{chat_id}:{key}", default)
 
-st.title("🏜️ Explore California - AI Travel Assistant")
-st.text("Interact with our AI-powered travel assistant to explore California's best locations and tours!")
+st.title("🗺️ AI Travel Assistant")
+st.text("Interact with our AI-powered travel assistant to explore the best locations and tours!")
 
 # Initialize saved chat sessions
 if "saved_chats" not in st.session_state:
@@ -431,7 +451,7 @@ if "last_result" not in st.session_state:
 with st.sidebar:
     st.subheader("⚙️ Settings")
     st.markdown("This app uses LangGraph + RAG with OpenAI gpt-4o-mini.")
-    st.markdown("It features a custom-trained local ML model for personalized travel recommendations.")
+    st.markdown("It features a custom-trained local ML model for personalized recommendations.")
 
     # Load a previously saved chat
     st.subheader("🗂️ Chats")

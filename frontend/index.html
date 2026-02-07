@@ -1,70 +1,398 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore California AI | Travel Assistant</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>AI Travel Assistant | مساعد الرحلات الذكي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="static/js/main.js" defer></script>
+
+    <!-- مكتبات جافاسكريبت -->
+    <script src="static/js/jquery-3.7.1.min.js"></script>
+    <script src="static/js/marked.min.js"></script>
+    <script src="static/js/highlight.js"></script>
+
+    <link rel="stylesheet" href="static/css/highlight/github.css" id="light-theme-highlight">
+    <link rel="stylesheet" href="static/css/highlight/github-dark.css" id="dark-theme-highlight">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <link rel="icon" type="image/png" href="static/images/website_top_logo_icon-150x150.png" alt="Logo">
+
+    <style>
+        .hidden { display: none !important; }
+
+        /* Custom subtle scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(227, 224, 224, 0.5) transparent;
+        }
+        *::-webkit-scrollbar { width: 4px; height: 4px; }
+        *::-webkit-scrollbar-thumb { background-color: rgba(227, 224, 224, 0.5); border-radius: 3px; }
+        *::-webkit-scrollbar-track { background: transparent; }
+    </style>
 </head>
+
 <body>
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
-
     <div class="app-container">
-        <header>
-            <div class="logo">
-                <span class="icon">🏜️</span>
-                <h1>Explore <span>California</span></h1>
-            </div>
-            <div class="status-badge" id="backend-status">
-                <div class="status-dot"></div>
-                <span>Checking Backend...</span>
-            </div>
-        </header>
-
-        <main class="chat-wrapper">
-            <div id="chat-messages" class="chat-messages">
-                <div class="message assistant">
-                    <div class="message-content">
-                        Hello! I'm your Explore California AI assistant. I can help you find the best locations and tours across the Golden State. What are your interests, or how can I help you today?
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-area">
-                <div id="followups" class="followups"></div>
-                <form id="chat-form">
-                    <input type="text" id="user-input" placeholder="Ask about places, tours, or share your interests..." autocomplete="off">
-                    <button type="submit" id="send-btn">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- القائمة الجانبية -->
+        <aside class="sidebar" style="transform: translateX(0px); opacity: 1;">
+            <div class="collapse-btn-group" style="position: absolute; left: 20px; display: flex;">
+                <div style="display: flex; align-items: center;">
+                    <div class="vertical-divider"></div>
+                    <button class="collapse-btn button-arrow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <line x1="4" y1="12" x2="20" y2="12"></line>
+                            <polyline points="14 6 20 12 14 18"></polyline>
+                        </svg>
                     </button>
-                </form>
-            </div>
-        </main>
-
-        <aside class="side-panel">
-            <div class="panel-section">
-                <h3>🔍 Context & Insights</h3>
-                <div id="context-info" class="info-content">
-                    Start a conversation to see AI insights here.
                 </div>
             </div>
-            <div class="panel-section">
-                <h3>🏷️ Recommended Products</h3>
-                <div id="product-info" class="info-content">
-                    No recommendations yet.
+
+            <div class="brand">
+                <span class="logo-icon" style="font-size: 2rem;">🗺️</span>
+                <h2 style="font-size: 1.2rem; margin: 0; color: #4B49AC;">AI Travel <span style="color: #af2929;">Assistant</span></h2>
+                <div class="separator"></div>
+            </div>
+
+            <nav class="nav-links">
+                <ul class="menu-list">
+                    <li class="menu-item active">
+                        <a href="#" class="menu-link">
+                            <i class="fas fa-comment"></i>
+                            <span>الدردشة الذكية</span>
+                        </a>
+                    </li>
+                    <li class="menu-item disabled">
+                        <a href="#" class="menu-link">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <i class="fas fa-comments icon" style="font-size: 80px; margin-bottom: 15px;"></i>
+                                <span class="text" style="text-align: center;">بدء محادثة مع AI Travel Assistant.
+                                    ابدأ واستمتع بالمحادثة عندما تكون مستعداً.
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- معلومات المستخدم -->
+            <div class="user-panel">
+                <div class="user-info">
+                    <img src="static/images/avatar.png" alt="User Avatar" class="avatar">
+                    <span class="username"></span>
+                </div>
+                <div class="user-actions">
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
                 </div>
             </div>
         </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content" style="margin-right: 285px; width: calc(100% - 250px);">
+            <!-- زر الاسترجاع -->
+            <button class="restore-sidebar" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+            </button>
+
+            <header class="navbar">
+                <div class="breadcrumb" style="display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-brain" style="font-size:1.3em;color:#af2929;"></i>
+
+                    <span style="font-weight:600;font-size:1.1em;">AI Travel Assistant</span>
+                </div>
+                <div class="navbar-actions">
+                    <button class="api-key-btn" title="مفتاح API">
+                        <i class="fas fa-key"></i>
+                    </button>
+                    <button class="info-btn" title="معلومات">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    <button class="theme-toggle" title="تبديل الوضع">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="user-avatar">YS</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- منطقة المحادثة -->
+                <div class="chat-area" id="chatArea">
+                    <div class="message-list">
+                        <div class="image-grid messages-grid" id="messagesGrid">
+                        </div>
+                    </div>
+
+                    <div class="message-input">
+                        <textarea placeholder="اكتب رسالتك هنا..."></textarea>
+                        <button class="send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <button class="send-btn voice-button" title="تسجيل صوتي">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <script src="script.js"></script>
+    <!-- شريط التقدم -->
+    <div class="progress-bar-container" id="progressBar" style="display: none;">
+        <div class="progress-bar" style="width: 0%;"></div>
+    </div>
+
+    <script>
+        // إدارة حالة الثيم
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        // تحديد العناصر
+        const themeToggle = document.querySelector('.theme-toggle');
+        const messageInput = document.querySelector('.message-input textarea');
+        const sendBtn = document.querySelector('.send-btn');
+        const messageList = document.querySelector('.message-list');
+        const messagesGrid = document.getElementById('messagesGrid');
+
+        // إعداد خيارات marked
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+            tables: true,
+            langPrefix: 'language-',
+        });
+
+        // تطبيق الثيم المحفوظ
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+            document.getElementById('light-theme-highlight').disabled = true;
+            document.getElementById('dark-theme-highlight').disabled = false;
+        } else {
+            document.getElementById('light-theme-highlight').disabled = false;
+            document.getElementById('dark-theme-highlight').disabled = true;
+        }
+
+        // إدارة الثيم
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+
+            const icon = themeToggle.querySelector('i');
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                document.getElementById('light-theme-highlight').disabled = true;
+                document.getElementById('dark-theme-highlight').disabled = false;
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                document.getElementById('light-theme-highlight').disabled = false;
+                document.getElementById('dark-theme-highlight').disabled = true;
+            }
+
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // إظهار رسالة التنبيه
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        // إضافة مستمعي الأحداث
+        themeToggle.addEventListener('click', toggleTheme);
+
+        sendBtn.addEventListener('click', async function (e) {
+            if (messageInput.value.trim() !== '') {
+                const inputText = messageInput.value.trim();
+                messageInput.value = '';
+                messageInput.disabled = true;
+                try {
+                    await addMessage(inputText);
+                } finally {
+                    messageInput.disabled = false;
+                    messageInput.focus();
+                }
+            }
+        });
+
+        messageInput.addEventListener('keypress', async function (e) {
+            if (e.key === 'Enter' && !e.shiftKey && this.value.trim() !== '') {
+                e.preventDefault();
+                const inputText = this.value.trim();
+                this.value = '';
+                this.disabled = true;
+                try {
+                    await addMessage(inputText);
+                } finally {
+                    this.disabled = false;
+                    this.focus();
+                }
+            }
+        });
+
+        // سجل المحادثة
+        let chatHistory = [];
+
+        // دالة إرسال الاستعلام إلى الخادم
+        async function sendQuery(query) {
+            const progressBar = document.getElementById('progressBar');
+            const progressBarFill = progressBar.querySelector('.progress-bar');
+
+            progressBar.style.display = 'block';
+            progressBarFill.style.width = '0%';
+
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += 1;
+                    progressBarFill.style.width = `${progress}%`;
+                }
+            }, 50);
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, history: chatHistory })
+                });
+
+                if (!response.ok) {
+                    throw new Error('فشل في الاتصال بالخادم');
+                }
+
+                const data = await response.json();
+                clearInterval(progressInterval);
+                progressBarFill.style.width = '100%';
+
+                // إضافة الرد المنسق
+                processMarkdownResponse(data.answer);
+
+                // تحديث سجل المحادثة
+                chatHistory.push({ role: 'user', content: query });
+                chatHistory.push({ role: 'assistant', content: data.answer });
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                console.error('خطأ:', error);
+                processMarkdownResponse(`### خطأ في المعالجة\n\`\`\`\n${error.message}\n\`\`\``);
+            } finally {
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    progressBarFill.style.width = '0%';
+                }, 1000);
+            }
+        }
+
+        // دالة إنشاء رسالة المستخدم
+        function createMessageElement(text, type = 'user-message', label = 'السؤال') {
+            const emptyState = messagesGrid.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-bubble ${type}`;
+
+            messageDiv.innerHTML = `
+                <div class="message-label">${label}</div>
+                <div class="message-container" style="display: flex; align-items: flex-start; gap: 12px;">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="starfox-cards" style="background: transparent; border-radius: 15px 15px 15px 0; max-width: 80%;">
+                            <div class="starfox-card" style="border-radius: inherit;">
+                                <div class="starfox-card__content" style="padding: 12px 15px;">
+                                    <p class="starfox-paragraph starfox-paragraph--md" style="margin: 0;">
+                                        ${text}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-time" style="font-size: 12px; color: #646974; margin-top: 4px;">
+                            ${new Date().toLocaleTimeString()}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            messagesGrid.appendChild(messageDiv);
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // دالة عرض رد النظام بتنسيق Markdown
+        function processMarkdownResponse(response) {
+            const emptyState = messagesGrid.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-bubble system-message markdown-content';
+
+            let markdownText = response;
+            if (typeof response === 'string') {
+                const htmlContent = marked.parse(markdownText, {
+                    gfm: true,
+                    breaks: true,
+                    tables: true,
+                    pedantic: false,
+                    sanitize: false,
+                    smartLists: true,
+                    smartypants: true
+                });
+
+                messageDiv.innerHTML = `
+                    <div class="message-label">النظام</div>
+                    <div class="message-container" style="display: flex; align-items: flex-start; gap: 12px;">
+                        <div style="flex: 1;">
+                            <div class="starfox-cards" style="border-radius: 15px 15px 15px 0; max-width: 80%;">
+                                <div class="starfox-card" style="border-radius: inherit;">
+                                    <div class="starfox-card__content" style="padding: 12px 15px;">
+                                        <p class="starfox-paragraph starfox-paragraph--md" style="margin: 0;">
+                                            ${htmlContent}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-time"></div>
+                `;
+            }
+
+            messagesGrid.appendChild(messageDiv);
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+
+            // تطبيق تمييز الأكواد
+            const codeBlocks = messageDiv.querySelectorAll('pre code');
+            codeBlocks.forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        }
+
+        // دالة إضافة رسالة جديدة
+        async function addMessage(text) {
+            try {
+                createMessageElement(text, 'user-message', 'السؤال');
+                await sendQuery(text);
+            } catch (error) {
+                console.error('Error in addMessage:', error);
+                processMarkdownResponse('عذراً، حدث خطأ في معالجة طلبك');
+            }
+        }
+    </script>
 </body>
+
 </html>

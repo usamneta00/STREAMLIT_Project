@@ -1,0 +1,887 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f6f8fd 0%, #e9eeff 100%);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* إضافة خلفية متحركة */
+.animated-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.animated-background span {
+    position: absolute;
+    display: block;
+    background: linear-gradient(135deg, rgba(201, 89, 89, 0.1) 0%, rgba(175, 41, 41, 0.05) 100%);
+    border-radius: 50%;
+    animation: float 20s infinite;
+}
+
+.animated-background span:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    left: -150px;
+    animation-delay: 0s;
+}
+
+.animated-background span:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    right: -200px;
+    animation-delay: 3s;
+}
+
+.animated-background span:nth-child(3) {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    left: 30%;
+    animation-delay: 6s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(10px, 10px) rotate(5deg); }
+    50% { transform: translate(0, 20px) rotate(0deg); }
+    75% { transform: translate(-10px, 10px) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 95%;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateY(0);
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.login-box:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo {
+    width: 60px;
+    margin-bottom: 25px;
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.login-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 35px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.login-header h1 {
+    font-size: 28px;
+    background: var(--primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 10px;
+}
+
+.login-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1s ease-out;
+}
+
+.login-btn, .register-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.login-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(201, 89, 89, 0.3);
+}
+
+.login-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.login-btn:hover::before {
+    transform: translateX(100%);
+}
+
+.register-btn {
+    background: white;
+    border: 2px solid var(--primary-solid);
+    color: var(--primary-solid);
+}
+
+.register-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: transparent;
+}
+
+/* تحسين النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    animation: modalFadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#registerModal .modal-content, #loginModal .modal-content {
+    background: rgba(255, 255, 255, 0.98);
+    margin: 2% auto;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-header {
+    text-align: right;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(230, 236, 250, 0.5);
+    position: relative;
+}
+
+.modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--primary-color);
+    transform: none;
+}
+
+.modal-header h2 {
+    font-size: 24px;
+    background: var(--primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 15px;
+    height: 40px;
+    border: 2px solid #e6ecfa;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #f8faff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-solid);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(175, 41, 41, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(201, 89, 89, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.submit-btn:hover::before {
+    transform: translateX(100%);
+}
+
+/* الرسوم المتحركة */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* الوضع الليلي */
+.dark-mode .login-container {
+    background: linear-gradient(135deg, #15191e 0%, #1a1f25 100%);
+}
+
+.dark-mode .login-box,
+.dark-mode .register-box,
+.dark-mode .modal-content {
+    background: rgba(25, 30, 36, 0.95);
+}
+
+.dark-mode .feature-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .feature-text {
+    color: #fff;
+}
+
+.dark-mode .login-header p,
+.dark-mode .register-header p {
+    color: #999;
+}
+
+.dark-mode .form-group label {
+    color: #ccc;
+}
+
+.dark-mode .form-group input,
+.dark-mode .form-group textarea {
+    background: #15191e;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* تحسينات التجاوب */
+@media (max-width: 768px) {
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-buttons,
+    .register-buttons {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        padding: 30px;
+    }
+}
+
+/* تنسيق زر جوجل */
+.social-login {
+    margin: 25px 0;
+    animation: fadeInUp 0.6s ease;
+}
+
+.google-btn {
+    width: 100%;
+    padding: 14px 25px;
+    border: 2px solid #e6ecfa;
+    border-radius: 15px;
+    background: #ffffff;
+    color: #444;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.google-btn:hover {
+    border-color: var(--primary-solid);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 89, 89, 0.2);
+}
+
+.google-btn img {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    background: white;
+    padding: 2px;
+}
+
+.google-btn:hover img {
+    transform: scale(1.05);
+    background: white;
+}
+
+.google-btn::before {
+    display: none;
+}
+
+/* فاصل محسن */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(230, 236, 250, 0.7),
+        transparent
+    );
+}
+
+.separator span {
+    padding: 0 20px;
+    font-size: 14px;
+    color: #666;
+    background: white;
+    position: relative;
+    font-weight: 500;
+}
+
+/* تحسين مظهر النافذة المنبثقة */
+.modal-content {
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid rgba(230, 236, 250, 0.5);
+    position: relative;
+}
+
+.modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: var(--primary-color);
+}
+
+.modal-header h2 {
+    font-size: 28px;
+    background: var(--primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+/* تحسين حقول الإدخال */
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(230, 236, 250, 0.8);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: rgba(248, 250, 255, 0.5);
+}
+
+.form-group input:focus {
+    border-color: var(--primary-solid);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(175, 41, 41, 0.1);
+}
+
+
+.submit-btn-login
+{
+  margin-top: 30px;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.submit-btn:hover::before {
+    transform: translateX(100%);
+}
+
+/* الوضع الليلي */
+.dark-mode .google-btn {
+    background: #1a1f25;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.dark-mode .google-btn:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-solid);
+    color: white;
+}
+
+/* تحسين التجاوب */
+@media (max-width: 480px) {
+    .google-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .modal-content {
+        padding: 30px;
+    }
+    
+    .modal-header h2 {
+        font-size: 24px;
+    }
+}
+
+.alert {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.form-error {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.form-group input:invalid + .form-error {
+    display: block;
+}
+
+/* تحسين التمرير */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+/* تحسين التجاوب */
+@media (max-height: 700px) {
+    .modal-content {
+        margin: 1% auto;
+        max-height: 90vh;
+    }
+    
+    .form-group {
+        margin-bottom: 6px;
+    }
+    
+    .modal-header {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+} 
+
+/* تنسيق خاص لنافذة التسجيل */
+#registerModal .modal-content {
+    max-width: min(95%, 650px);
+    width: 100%;
+    padding: clamp(1rem, 4vw, 2.5rem);
+    margin: 1rem auto;
+    position: relative;
+}
+
+#registerModal .modal-header {
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+}
+
+#registerModal .modal-header h2 {
+    font-size: clamp(1.2rem, 4vw, 1.75rem);
+    margin-bottom: 0.5rem;
+}
+
+#registerModal .modal-header p {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    opacity: 0.8;
+    display: block;
+}
+
+/* إخفاء النص في الشاشات الصغيرة */
+@media (max-width: 480px) {
+    #registerModal .modal-header p {
+        display: none;
+    }
+
+    #registerModal .modal-content {
+        margin: 0.5rem auto;
+        padding: 1rem;
+    }
+}
+
+/* تحسين المظهر في الشاشات المتوسطة */
+@media (min-width: 481px) and (max-width: 768px) {
+    #registerModal .modal-content {
+        margin: 1rem auto;
+    }
+}
+
+/* تحسين المظهر في الشاشات الكبيرة */
+@media (min-width: 769px) {
+    #registerModal .modal-content {
+        margin: 2rem auto;
+    }
+}
+
+#registerModal .form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+#registerModal .form-group {
+    margin: 0;
+}
+
+#registerModal .form-group label {
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    margin-bottom: clamp(0.3rem, 1vw, 0.5rem);
+}
+
+#registerModal input {
+    width: 100%;
+    padding: clamp(0.5rem, 2vw, 0.875rem) clamp(0.75rem, 2vw, 1.25rem);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+#registerModal .submit-btn {
+    grid-column: 1 / -1;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+}
+
+/* تحسين التجاوب للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+    #registerModal .modal-content {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    #registerModal .form {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    #registerModal .form-group:nth-child(1),
+    #registerModal .form-group:nth-child(2) {
+        grid-column: 1;
+    }
+}
+
+/* تحسين التجاوب للشاشات المتوسطة */
+@media (min-width: 481px) and (max-width: 768px) {
+    #registerModal .form {
+        grid-template-columns: 1fr;
+    }
+
+    #registerModal .form-group:nth-child(1),
+    #registerModal .form-group:nth-child(2) {
+        grid-column: 1;
+    }
+}
+
+/* تحسين التجاوب للشاشات الكبيرة */
+@media (min-width: 769px) {
+    #registerModal .form-group:nth-child(1),
+    #registerModal .form-group:nth-child(2) {
+        grid-column: span 2;
+    }
+}
+
+/* تحسين ارتفاع النافذة للشاشات المنخفضة */
+@media (max-height: 600px) {
+    #registerModal .modal-content {
+        max-height: 95vh;
+        overflow-y: auto;
+        transform: none;
+        top: 0;
+        margin: 1rem auto;
+    }
+
+    #registerModal .form {
+        gap: 0.75rem;
+    }
+
+    #registerModal .modal-header {
+        margin-bottom: 1rem;
+    }
+}
+
+#registerModal .close-btn {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#registerModal .close-btn:hover {
+    opacity: 1;
+    background-color: var(--background-color);
+}
+
+#registerModal .close-btn-register{
+    position: absolute;
+    left: -1rem;
+    top: -1.4rem;
+}
+
+/* تنسيق مؤشر التحميل */
+.spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.submit-btn.loading {
+    position: relative;
+    cursor: wait;
+}
+
+.submit-btn.loading .spinner {
+    display: inline-block;
+}
+
+.submit-btn.loading .btn-text {
+    opacity: 0.8;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* تعديل نص الأزرار عند التحميل */
+.submit-btn .btn-text {
+    transition: opacity 0.3s ease;
+}
+
+/* تحسين زر الإغلاق في الشاشات الصغيرة */
+@media (max-width: 480px) {
+    #registerModal .close-btn {
+        left: 0.5rem;
+        top: 0.5rem;
+        width: 25px;
+        height: 25px;
+        font-size: 1.2rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #registerModal .close-btn:hover {
+        background-color: white;
+    }
+}
+
+/* تحسين زر الإغلاق في الشاشات المتوسطة */
+@media (min-width: 481px) and (max-width: 768px) {
+    #registerModal .close-btn {
+        left: 0.75rem;
+        top: 0.75rem;
+        width: 28px;
+        height: 28px;
+        font-size: 1.3rem;
+    }
+}
+
+/* تحسين موقع login-box في الشاشات الصغيرة */
+@media (max-width: 480px) {
+    .login-box {
+        margin-top: -80px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .animated-background {
+        z-index: 1;
+    }
+}
+
+/* تحسين الانتقال بين الأحجام المختلفة */
+.login-box {
+    transition: margin-top 0.3s ease;
+}
