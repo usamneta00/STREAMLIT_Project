@@ -41,11 +41,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuration
+# Get the directory where main.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Configuration (Relative to BASE_DIR)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-MODEL_ARTIFACTS_PATH = os.path.join("backend", "models", "logistic_model_outputs.pkl")
-LOCATIONS_CSV = os.path.join("backend", "data", "locations.csv")
-PRODUCTS_CSV = os.path.join("backend", "data", "products.csv")
+MODEL_ARTIFACTS_PATH = os.path.join(BASE_DIR, "models", "logistic_model_outputs.pkl")
+LOCATIONS_CSV = os.path.join(BASE_DIR, "data", "locations.csv")
+PRODUCTS_CSV = os.path.join(BASE_DIR, "data", "products.csv")
 
 # Global variables for models and data
 embedder = None
@@ -210,7 +213,7 @@ if os.path.exists("frontend"):
 
 
 if __name__ == "__main__":
-    port = 8000
+    port = int(os.getenv("PORT", 8000))
     print(f"🔗 Server running at: http://localhost:{port}")
     uvicorn.run(app, host="0.0.0.0", port=port)
 
